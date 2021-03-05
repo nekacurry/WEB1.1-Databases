@@ -21,7 +21,7 @@ def plants_list():
 
     # TODO: Replace the following line with a database call to retrieve *all*
     # plants from the Mongo database's `plants` collection.
-    plants_data = ''
+    plants_data = mongo.db.plants.find()
 
     context = {
         'plants': plants_data,
@@ -61,13 +61,13 @@ def detail(plant_id):
 
     # TODO: Replace the following line with a database call to retrieve *one*
     # plant from the database, whose id matches the id passed in via the URL.
-    plant_to_show = ''
+    plant_to_show = mongo.db.plants.find_one({'_id' : ObjectId(plant_id)})
 
     # TODO: Use the `find` database operation to find all harvests for the
     # plant's id.
     # HINT: This query should be on the `harvests` collection, not the `plants`
     # collection.
-    harvests = ''
+    harvests = mongo.db.harvests.find({'plant_id' : plant_id})
 
     context = {
         'plant' : plant_to_show,
