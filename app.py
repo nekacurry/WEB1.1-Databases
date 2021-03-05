@@ -62,15 +62,29 @@ def detail(plant_id):
     # TODO: Replace the following line with a database call to retrieve *one*
     # plant from the database, whose id matches the id passed in via the URL.
     plant_to_show = mongo.db.plants.find_one({'_id' : ObjectId(plant_id)})
+    plant = {
+      'name': plant_to_show['name'],
+      'variety': plant_to_show['variety'],
+      'photo_url': plant_to_show['photo_url'],
+      'date_planted': plant_to_show['date_planted'],
+      'id': str(plant_to_show['_id'])
+    }
 
     # TODO: Use the `find` database operation to find all harvests for the
     # plant's id.
     # HINT: This query should be on the `harvests` collection, not the `plants`
     # collection.
     harvests = mongo.db.harvests.find({'plant_id' : plant_id})
+    plant_harvests = []
+    for harvest in harvests:
+        plant_harvests.append({
+            'amount': harvest['quantity'],
+            'date': harvest['date']
+        })
+
 
     context = {
-        'plant' : plant_to_show,
+        'plant' : plant,
         'harvests': harvests
     }
     return render_template('detail.html', **context)
